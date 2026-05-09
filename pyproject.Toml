@@ -13,7 +13,8 @@ dependencies = [
     "scikit-learn (>=1.8.0,<2.0.0)",
     "streamlit (>=1.57.0,<2.0.0)",
     "speechrecognition (>=3.16.1,<4.0.0)",
-    "pyttsx3 (>=2.99,<3.0)"
+    "pyttsx3 (>=2.99,<3.0)",
+    "numpy (>=2.4.4,<3.0.0)"
 ]
 
 [tool.poetry]

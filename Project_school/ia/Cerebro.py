@@ -1,7 +1,12 @@
 import speech_recognition as sr
-import pyttsx3
 import io
 import sounddevice as sd 
+import numpy as np
+import io
+import os
+import wave 
+from gtts import gTTS
+from playsound import playsound
 
 class Cerebro:
     """""
@@ -11,29 +16,26 @@ class Cerebro:
     """""
     def __init__(self):
         """""
-        __init__ roda auto quando se faz o Cerebro()
+        __init__ roda automaticamente quando se faz o Cerebro()
         é o momento que a ia acorda
         """""
         print("[IA] Núcleo inicializado.")
         self.nome= "alexa escolar"
-        self.motor_voz = pyttsx3.init()
-        self.motor_voz.setProperty('rate', 170)
-        self.motor_voz.setProperty("volume", 1.0)
-        vozes = self.motor_voz.getProperty("voices")
         self.reconhecedor = sr.Recognizer()
         self.reconhecedor.energy_threshold = 300
-        for voz in vozes:
-            if "brazil" in voz.id.lower() or "portuguese" in voz.id.lower():
-                self.motor_voz.setProperty("voice", voz.id)
-                break
+        self.taxa_amostragem = 16000
+        self.duracao_escuta = 5
+
     def falar(self, texto):
         """""
         Por enqunto so imprime
         mas futuramente falará
         """""
         print(f"[{self.nome}]: {texto}")
-        self.motor_voz.say(texto)
-        self.motor_voz.runAndWait()
+        tts = gTTS(text =  texto, lang="pt-br", slow= False)
+        tts.save("Temp_audio.mp3")
+        playsound("Temp_audio.mp3")
+        os.remove("Temp_audio.mp3")
     def ouviu(self):
         """""
         depois vai receber mic
@@ -72,6 +74,7 @@ class Cerebro:
         except sr.RequestError:
                 self.falar("No momento estou sem conexão para processar sua voz, tente novamente mais tarde.")
                 return None
+        
     def processar(self, comando):
         """""
         Recebe o comando e decide o que fazer
@@ -86,4 +89,3 @@ class Cerebro:
             self.falar("Eu sou a Inteligência Artificial Escolar. Estou aqui para te ajudar no controle da sua escola!")
         else:
             self.falar(f"Recebi o comando '{comando}'. Em breve saberei o que fazer!")
-        
