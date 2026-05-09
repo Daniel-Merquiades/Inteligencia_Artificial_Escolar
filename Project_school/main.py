@@ -14,5 +14,5 @@ while True:
     except KeyboardInterrupt:
         ia.falar("Encerrando sistema. Até breve")
         break
-if __main__ == "__main__":
+if __name__ == "__main__":
     main()
