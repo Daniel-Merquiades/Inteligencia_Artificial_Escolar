@@ -12,7 +12,7 @@ def main():
             if comando:
                 ia.processar(comando)
         except KeyboardInterrupt:
-            ia.falar("Encerrando sistema. Até breve")
+
             break
 if __name__ == "__main__":
     main()
