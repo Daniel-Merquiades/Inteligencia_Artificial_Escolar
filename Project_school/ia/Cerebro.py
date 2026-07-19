@@ -9,6 +9,7 @@ import pickle
 from gtts import gTTS
 from playsound import playsound
 from ia.aprendizado import Aprendizado
+from dados.banco import Banco
 
 class Cerebro:
     """""
@@ -22,6 +23,7 @@ class Cerebro:
         é o momento que a ia acorda
         """""
         print("[IA] Núcleo inicializado.")
+        self.banco = Banco()
         self.nome= "alexa escolar"
         self.reconhecedor = sr.Recognizer()
         self.reconhecedor.energy_threshold = 300
@@ -139,23 +141,115 @@ class Cerebro:
                  intencao = intencao_correta
              else:
                  return
-        
+             
+        #Ligar luzes
         if intencao == "ligar_luz":
              self.falar("Ligando as luzes!")
+
+          #Apagar as luzes
         elif intencao == "apagar_luz":
              self.falar("Apagando as luzes!")
+          
+          #Ligar as luzes da quadra
         elif intencao == "ligar_quadra":
             self.falar("Ligando as luzes da quadra!")
+
+          #Apagar as luzes da quadra
         elif intencao == "apagar_quadra":
              self.falar("Apagando as luzes da quadra!")
+
+          #Fazer a chamada
         elif intencao == "fazer_chamada":
-             self.falar("Iniciando chamada da turma!")
+             self.falar("Qual é a turma?")
+             turma = self.ouvir_resposta()
+             if not turma:
+                  self.falar("Não entendi a turma, Pode repetir?")
+                  return
+             turma = turma.upper()
+             alunos = self.banco.listar_turma(turma)
+
+             if not alunos:
+                  self.falar(f"Nenhum aluno encontrado na turma '{turma}'.")
+             else:   
+               self.falar("Iniciando chamada da turma '{turma}'!")
+               for aluno in alunos:
+                    self.falar(f"{aluno[1]}.")
+                    resposta = self.ouvir_resposta()
+                    if resposta and ("sim" in resposta.lower() or "presente" in resposta.lower() or "aqui" in resposta.lower()):
+                         presente = 1
+                    else :
+                         presente = 0
+                    self.banco.registrar_chamada(aluno[0], presente)
+               self.falar("Chamada Finalizada! O que mais posso fazer por você?")
+
+          #Saudações
         elif intencao == "saudacao":
              self.falar("Olá! Como posso ajudar?")
+
+          #Consultar o aluno
         elif intencao =="consultar_aluno":
-             self.falar("Buscando dados sobre o aluno...")
+             while True:
+                     self.falar("Qual é o nome do aluno?")
+                     nome = self.ouvir_resposta()
+                     if not nome:
+                          continue
+                     resultados = self.banco.buscar_aluno(nome)
+
+                     if resultados:
+                          for aluno in resultados:
+                               self.falar(f"Aluno encontrado: {aluno[1]}, turma {aluno[2]}, {aluno[3]} anos.")
+                          self.falar("Deseja consultar outro aluno?")
+                          resposta = self.ouvir_resposta()
+                          if resposta and "sim"in resposta.lower():
+                               continue
+                          else:
+                             break
+                     else:
+                          self.falar(f"Nenhum aluno encontrado com o nome: {nome}. Deseja tentar novamente?")
+                          resposta= self.ouvir_resposta()
+                     if resposta and "sim" in resposta.lower():
+                          continue
+                     else:
+                          self.falar("OK, o que mais posso fazer por você?")
+                          break
+                  
+
+          #Encerramento do sistema
         elif intencao == "encerrar":
              self.falar("Encerrando o sistema. Até logo!")
              raise KeyboardInterrupt
         else:
              self.falar(f"Recebi o comando mas ainda não sei executar isso. Desculpe...")
+
+    def ouvir_resposta(self):
+         """
+         Ouve uma resposta curta do usuário.
+         Usado para captar nome de alundo, turma e etc.
+         """
+         print("\n[IA] Ouvindo resposta...")
+         try:
+              audio_gravado =sd.rec(
+                   int(self.duracao_escuta * self.taxa_amostragem), samplerate=self.taxa_amostragem,
+                   channels = 1,
+                   dtype= 'int16'
+              )
+              sd.wait()
+              buffer = io.BytesIO()
+              with wave.open(buffer, "wb") as wav_file:
+                   wav_file.setnchannels(1)
+                   wav_file.setsampwidth(2)
+                   wav_file.setframerate(self.taxa_amostragem)
+                   wav_file.writeframes(audio_gravado.tobytes())
+                   buffer.seek(0)
+                   with sr.AudioFile(buffer) as fonte:
+                        audio = self.reconhecedor.record(fonte)
+
+                   texto = self.reconhecedor.recognize_google(audio, language="pt-BR")
+                   print(f"[IA] Ouviu: '{texto}' ")
+                   return texto.strip()
+         except sr.UnknownValueError:
+              self.falar("Não entendi. Pode repetir?")
+              return None
+         except Exception as e:
+              print(f"[ERRO] {e}")
+              return None

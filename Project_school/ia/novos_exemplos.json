@@ -2,5 +2,21 @@
   {
     "frase": "encerrar encerrar",
     "intencao": "encerrar"
+  },
+  {
+    "frase": "consultar nomes",
+    "intencao": "consultar_aluno"
+  },
+  {
+    "frase": "lenda as luzes da quadra",
+    "intencao": "ligar_quadra"
+  },
+  {
+    "frase": "9 a",
+    "intencao": "fazer_chamada"
+  },
+  {
+    "frase": "9 a",
+    "intencao": "fazer_chamada"
   }
 ]
