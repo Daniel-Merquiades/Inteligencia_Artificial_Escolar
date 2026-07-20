@@ -10,6 +10,7 @@ from gtts import gTTS
 from playsound import playsound
 from ia.aprendizado import Aprendizado
 from dados.banco import Banco
+from dispositivos.controles import Controles
 
 class Cerebro:
     """""
@@ -23,6 +24,7 @@ class Cerebro:
         é o momento que a ia acorda
         """""
         print("[IA] Núcleo inicializado.")
+        self.controles = Controles()
         self.banco = Banco()
         self.nome= "alexa escolar"
         self.reconhecedor = sr.Recognizer()
@@ -120,13 +122,19 @@ class Cerebro:
              self.falar("Não tenho certeza do que você quis dizer. Pode repetir?")
              opcoes= {
                 "1": "ligar_luz",
-                "2": "apagar_luz",
-                "3": "ligar_quadra",
-                "4": "apagar_quadra",
-                "5": "fazer_chamada",
-                "6": "consultar_aluno",
-                "7": "saudacao",
-                "8": "encerrar"
+                "2": "ligar_sala1",
+                "3": "ligar_sala2",
+                "4": "ligar_coordenacao",
+                "5": "apagar_luz",
+                "6": "apagar_sala1",
+                "7": "apagar_sala2",
+                "8": "apagar_coordenacao",
+                "9": "ligar_quadra",
+                "10": "apagar_quadra",
+                "11": "fazer_chamada",
+                "12": "consultar_aluno",
+                "13": "saudacao",
+                "14": "encerrar"
              }
              print("\nOpções:")
              for num, nome in opcoes.items():
@@ -145,19 +153,44 @@ class Cerebro:
         #Ligar luzes
         if intencao == "ligar_luz":
              self.falar("Ligando as luzes!")
+             self.controles.ligar_sala1()
+             self.controles.ligar_sala2()
+             self.controles.ligar_coordenacao()
+        elif intencao =="ligar_sala1":
+             self.falar("Ligando as luzes da sala 1!")
+             self.controles.ligar_sala1()
+        elif intencao == "ligar_sala2":
+             self.falar("Ligando as luzes da sala 2!")
+             self.controles.ligar_sala2()
+        elif intencao == "ligar_coordenacao":
+             self.falar("Ligando as luzes da coordenação!")
+             self.controles.ligar_coordenacao()
 
           #Apagar as luzes
         elif intencao == "apagar_luz":
              self.falar("Apagando as luzes!")
-          
+             self.controles.apagar_sala1()
+             self.controles.apagar_sala2()
+             self.controles.apagar_coordenacao()
+
+        elif intencao =="apagar_sala1":
+             self.falar("Apagando as luzes da sala 1!")
+             self.controles.apagar_sala1()
+        elif intencao == "apagar_sala2":
+             self.falar("Apagando as luzes da sala 2!")
+             self.controles.apagar_sala2()
+        elif intencao == "apagar_coordenacao":
+             self.falar("Apagando as luzes da coordenação!")
+             self.controles.apagar_coordenacao()
+
           #Ligar as luzes da quadra
         elif intencao == "ligar_quadra":
             self.falar("Ligando as luzes da quadra!")
-
+            self.controles.ligar_quadra()
           #Apagar as luzes da quadra
         elif intencao == "apagar_quadra":
              self.falar("Apagando as luzes da quadra!")
-
+             self.controles.apagar_quadra()
           #Fazer a chamada
         elif intencao == "fazer_chamada":
              self.falar("Qual é a turma?")

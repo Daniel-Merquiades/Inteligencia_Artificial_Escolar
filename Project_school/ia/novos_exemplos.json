@@ -18,5 +18,121 @@
   {
     "frase": "9 a",
     "intencao": "fazer_chamada"
+  },
+  {
+    "frase": "apagar luzes",
+    "intencao": "apagar_luz"
+  },
+  {
+    "frase": "apagar luzes",
+    "intencao": "apagar_luz"
+  },
+  {
+    "frase": "apagar luzes",
+    "intencao": "apagar_luz"
+  },
+  {
+    "frase": "apagar luzes da quadra",
+    "intencao": "apagar_quadra"
+  },
+  {
+    "frase": "pagar luzes na quadra",
+    "intencao": "apagar_quadra"
+  },
+  {
+    "frase": "apagar as luzes",
+    "intencao": "apagar_luz"
+  },
+  {
+    "frase": "apagar as luzes",
+    "intencao": "apagar_luz"
+  },
+  {
+    "frase": "apagar luzes",
+    "intencao": "apagar_luz"
+  },
+  {
+    "frase": "encerrar encerrar",
+    "intencao": "encerrar"
+  },
+  {
+    "frase": "apagar luzes",
+    "intencao": "apagar_luz"
+  },
+  {
+    "frase": "ligar luz da sala 1",
+    "intencao": "apagar_sala1"
+  },
+  {
+    "frase": "ligar luzes da sala 1",
+    "intencao": "ligar_sala1"
+  },
+  {
+    "frase": "ligar as luzes da sala 1",
+    "intencao": "ligar_sala1"
+  },
+  {
+    "frase": "ligar as luzes da sala 1",
+    "intencao": "ligar_sala1"
+  },
+  {
+    "frase": "ligar a sala 2",
+    "intencao": "ligar_sala2"
+  },
+  {
+    "frase": "ligar sala 2",
+    "intencao": "ligar_sala2"
+  },
+  {
+    "frase": "ligar sala 2",
+    "intencao": "ligar_sala2"
+  },
+  {
+    "frase": "ligar ligar as luzes da sala 2",
+    "intencao": "ligar_sala2"
+  },
+  {
+    "frase": "as luzes da sala 2",
+    "intencao": "ligar_sala2"
+  },
+  {
+    "frase": "ligar as luzes sala 2",
+    "intencao": "ligar_sala2"
+  },
+  {
+    "frase": "ligar coordenação",
+    "intencao": "ligar_coordenacao"
+  },
+  {
+    "frase": "oi oi oi oi oi oi",
+    "intencao": "saudacao"
+  },
+  {
+    "frase": "acender luzes da sala 1",
+    "intencao": "ligar_sala1"
+  },
+  {
+    "frase": "ligar as luzes da coordenação",
+    "intencao": "ligar_coordenacao"
+  },
+  {
+    "frase": "apagar as luzes da sala 1",
+    "intencao": "apagar_sala1"
+  },
+  {
+    "frase": "apagar as luzes da sala 1",
+    "intencao": "apagar_sala1"
+  },
+  {
+    "frase": "apagar as luzes da sala 1",
+    "intencao": "apagar_sala1"
+  },
+  {
+    "frase": "apagar as luzes da sala 1",
+    "intencao": "apagar_sala1"
+  },
+  {
+    "frase": "encontrar alguém",
+    "intencao": "consultar_aluno"
   }
 ]

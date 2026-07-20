@@ -1,6 +1,6 @@
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 import pickle
 import os
 
@@ -19,14 +19,103 @@ Dados = [
     ("quero luz", "ligar_luz"),
     ("iniciar luzes","ligar_luz"),
 
+    # Ligar sala 1
+
+    ("liga a sala 1", "ligar_sala1"),
+    ("liga a sala um", "ligar_sala1"),
+    ("acende a sala 1", "ligar_sala1"),
+    ("acende a sala um", "ligar_sala1"),
+    ("ligar sala 1", "ligar_sala1"),
+    ("ligar sala um", "ligar_sala1"),
+    ("luz da sala 1", "ligar_sala1"),
+    ("luz da sala um", "ligar_sala1"),
+    ("ilumina a sala 1", "ligar_sala1"),
+    ("ilumina a sala um", "ligar_sala1"),
+    ("ligar as luzes da sala 1", "ligar_sala1"),
+    ("ligar as luzes da sala um", "ligar_sala1"),
+    ("acender as luzes da sala 1", "ligar_sala1"),
+    ("quero luz na sala 1", "ligar_sala1"),
+    ("quero luz na sala um", "ligar_sala1"),
+
+    # Apagar sala 1
+
+    ("apaga a sala 1", "apagar_sala1"),
+    ("apaga a sala um", "apagar_sala1"),
+    ("desliga a sala 1", "apagar_sala1"),
+    ("desliga a sala um", "apagar_sala1"),
+    ("apagar sala 1", "apagar_sala1"),
+    ("apagar sala um", "apagar_sala1"),
+    ("desligar sala 1", "apagar_sala1"),
+    ("desligar sala um", "apagar_sala1"),
+    ("apagar as luzes da sala 1", "apagar_sala1"),
+    ("apagar as luzes da sala um", "apagar_sala1"),
+    ("desligar as luzes da sala 1", "apagar_sala1"),
+    ("sem luz na sala 1", "apagar_sala1"),
+
+    # Ligar sala 2
+
+    ("liga a sala 2", "ligar_sala2"),
+    ("liga a sala dois", "ligar_sala2"),
+    ("acende a sala 2", "ligar_sala2"),
+    ("acende a sala dois", "ligar_sala2"),
+    ("ligar sala 2", "ligar_sala2"),
+    ("ligar sala dois", "ligar_sala2"),
+    ("luz da sala 2", "ligar_sala2"),
+    ("luz da sala dois", "ligar_sala2"),
+    ("ilumina a sala 2", "ligar_sala2"),
+    ("ilumina a sala dois", "ligar_sala2"),
+    ("ligar as luzes da sala 2", "ligar_sala2"),
+    ("ligar as luzes da sala dois", "ligar_sala2"),
+    ("acender as luzes da sala 2", "ligar_sala2"),
+    ("quero luz na sala 2", "ligar_sala2"),
+    ("quero luz na sala dois", "ligar_sala2"),
+
+    # Apagar sala 2
+
+    ("apaga a sala 2", "apagar_sala2"),
+    ("apaga a sala dois", "apagar_sala2"),
+    ("desliga a sala 2", "apagar_sala2"),
+    ("desliga a sala dois", "apagar_sala2"),
+    ("apagar sala 2", "apagar_sala2"),
+    ("apagar sala dois", "apagar_sala2"),
+    ("desligar sala 2", "apagar_sala2"),
+    ("desligar sala dois", "apagar_sala2"),
+    ("apagar as luzes da sala 2", "apagar_sala2"),
+    ("apagar as luzes da sala dois", "apagar_sala2"),
+    ("desligar as luzes da sala 2", "apagar_sala2"),
+    ("sem luz na sala 2", "apagar_sala2"),
+
+    # Ligar coordenação
+
+    ("liga a coordenação", "ligar_coordenacao"),
+    ("ligar coordenação", "ligar_coordenacao"),
+    ("acende a coordenação", "ligar_coordenacao"),
+    ("acender coordenação", "ligar_coordenacao"),
+    ("luz da coordenação", "ligar_coordenacao"),
+    ("ilumina a coordenação", "ligar_coordenacao"),
+    ("ligar as luzes da coordenação", "ligar_coordenacao"),
+    ("acender as luzes da coordenação", "ligar_coordenacao"),
+    ("quero luz na coordenação", "ligar_coordenacao"),
+    ("coordenação luz", "ligar_coordenacao"),
+
+    # Apagar coordenação
+
+    ("apaga a coordenação", "apagar_coordenacao"),
+    ("apagar coordenação", "apagar_coordenacao"),
+    ("desliga a coordenação", "apagar_coordenacao"),
+    ("desligar coordenação", "apagar_coordenacao"),
+    ("apagar as luzes da coordenação", "apagar_coordenacao"),
+    ("desligar as luzes da coordenação", "apagar_coordenacao"),
+    ("sem luz na coordenação", "apagar_coordenacao"),
+
     #Comandos para desligar as luzes
 
-    ("apague as luzes", "apagar_luzes"),
-    ("desligue as luzes","apagar_luzes"),
-    ("encerre as luzes", "apagar_luzes"),
-    ("apagar luz", "apagar_luzes"),
-    ("desligar luz", "apagar_luzes"),
-    ("sem luz", "apagar_luzes"),
+    ("apague as luzes", "apagar_luz"),
+    ("desligue as luzes","apagar_luz"),
+    ("encerre as luzes", "apagar_luz"),
+    ("apagar luz", "apagar_luz"),
+    ("desligar luz", "apagar_luz"),
+    ("sem luz", "apagar_luz"),
 
     #Comandos para ligar luzes da quadra
 
@@ -90,8 +179,8 @@ Dados = [
 frases = [item[0] for item in Dados]
 intencoes = [item[1] for item in Dados]
 modelo = Pipeline([
-    ("tfidf", TfidfVectorizer()),
-    ("classificador", LogisticRegression())
+    ("tfidf", TfidfVectorizer( ngram_range=(1, 3), analyzer = "char_wb")),
+    ("classificador", SVC(kernel="linear",probability=True,C=10))
 ])
 print("Treinando a IA Escolar...")
 modelo.fit(frases,intencoes)
@@ -115,9 +204,6 @@ caminho_modelo = os.path.join(pasta_atual, "modelo.pkl")
 with open(caminho_modelo, "wb") as arquivo:
     pickle.dump(modelo, arquivo)
 print("-"*40)
-if __name__ == "__main__":
-    modelo.fit(frases, intencoes)
-    with open(caminho_modelo, "wb") as arquivo:
-        pickle.dump(modelo, arquivo)
-    print(f"Modelo salvo em: '{caminho_modelo}'")
+
+print(f"Modelo salvo em: '{caminho_modelo}'")
     
