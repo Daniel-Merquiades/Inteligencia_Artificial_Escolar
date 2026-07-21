@@ -50,3 +50,23 @@ class Controles:
     # Quadra
     def ligar_quadra(self):
         self.enviar("LIGA_QUADRA")
+    def apaga_quadra(self):
+        self.enviar("APAGA_QUADRA")
+
+    # Pátio
+    def ligar_patio(self):
+        self.enviar("LIGAR_PATIO")
+    def apaga_patio(self):
+        self.enviar("APAGA_PATIO")
+
+    # Portão de entrada
+    def abrir_portao(self):
+        self.enviar("ABRIR_PORTAO")
+    def fechar_portao(self):
+        self.enviar("FECHAR_PORTAO")
+    
+    # Porta da coordenação
+    def abrir_coord(self):
+        self.enviar("ABRIR_COORD")
+    def fechar_coord(self):
+        self.enviar("FECHAR_COORD")

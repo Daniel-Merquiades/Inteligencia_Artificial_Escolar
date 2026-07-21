@@ -165,6 +165,9 @@ class Cerebro:
         elif intencao == "ligar_coordenacao":
              self.falar("Ligando as luzes da coordenação!")
              self.controles.ligar_coordenacao()
+        elif intencao == "ligar_patio":
+             self.falar("ligando as luzes do pátio")
+             self.controles.ligar_patio()
 
           #Apagar as luzes
         elif intencao == "apagar_luz":
@@ -182,6 +185,9 @@ class Cerebro:
         elif intencao == "apagar_coordenacao":
              self.falar("Apagando as luzes da coordenação!")
              self.controles.apagar_coordenacao()
+        elif intencao == "apaga_patio":
+             self.falar("Apagando as luzes do pátio")
+             self.controles.apaga_patio()
 
           #Ligar as luzes da quadra
         elif intencao == "ligar_quadra":
@@ -190,7 +196,23 @@ class Cerebro:
           #Apagar as luzes da quadra
         elif intencao == "apagar_quadra":
              self.falar("Apagando as luzes da quadra!")
-             self.controles.apagar_quadra()
+             self.controles.apaga_quadra()
+
+          #Abrir portão principal e coordenação
+        elif intencao == "abrir_portao":
+             self.falar("abrindo portão de entrada!")
+             self.controles.abrir_portao()
+        elif intencao == "abrir_coord":
+             self.falar("abrindo a porta da coordenação!")
+             self.controles.abrir_coord()
+          #Fechar portão principal e coordenação
+        elif intencao == "fechar_portao":
+             self.falar("fechando portão de entrada!")
+             self.controles.fechar_portao()
+        elif intencao == "fechar_coord":
+             self.falar("fechando a porta da coordenação!")
+             self.controles.fechar_coord()
+
           #Fazer a chamada
         elif intencao == "fazer_chamada":
              self.falar("Qual é a turma?")

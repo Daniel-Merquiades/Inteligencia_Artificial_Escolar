@@ -134,5 +134,25 @@
   {
     "frase": "encontrar alguém",
     "intencao": "consultar_aluno"
+  },
+  {
+    "frase": "ligar luzes da diretoria",
+    "intencao": "ligar_coordenacao"
+  },
+  {
+    "frase": "ligar quadra",
+    "intencao": "ligar_quadra"
+  },
+  {
+    "frase": "desligar luzes na quadra",
+    "intencao": "apagar_quadra"
+  },
+  {
+    "frase": "desligar luzes da quadra",
+    "intencao": "apagar_quadra"
+  },
+  {
+    "frase": "encerrar",
+    "intencao": "encerrar"
   }
 ]
