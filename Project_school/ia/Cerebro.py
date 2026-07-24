@@ -226,16 +226,21 @@ class Cerebro:
              if not alunos:
                   self.falar(f"Nenhum aluno encontrado na turma '{turma}'.")
              else:   
-               self.falar("Iniciando chamada da turma '{turma}'!")
-               for aluno in alunos:
-                    self.falar(f"{aluno[1]}.")
-                    resposta = self.ouvir_resposta()
-                    if resposta and ("sim" in resposta.lower() or "presente" in resposta.lower() or "aqui" in resposta.lower()):
-                         presente = 1
-                    else :
-                         presente = 0
-                    self.banco.registrar_chamada(aluno[0], presente)
-               self.falar("Chamada Finalizada! O que mais posso fazer por você?")
+                self.falar(f"Iniciando chamada da turma {turma}!")
+                for aluno in alunos:
+                     self.falar(f"{aluno[1]}.")
+                     presente = 0
+                     for tentativa in range(2):
+                          resposta = self.ouvir_resposta()
+                          if resposta and ("sim" in resposta.lower() or "presente" in resposta.lower() or "aqui" in resposta.lower()):
+                               presente = 1
+                               break
+                          elif tentativa == 0:
+                               self.falar(f"Não ouvi. {aluno[1]} está presente?")
+                          else :
+                               self.falar("Marcado como falta.")
+                          self.banco.registrar_chamada(aluno[0], presente)
+                     self.falar("Chamada Finalizada! O que mais posso fazer por você?")
 
           #Saudações
         elif intencao == "saudacao":

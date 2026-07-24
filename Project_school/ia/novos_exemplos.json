@@ -154,5 +154,9 @@
   {
     "frase": "encerrar",
     "intencao": "encerrar"
+  },
+  {
+    "frase": "encontrar aluno",
+    "intencao": "consultar_aluno"
   }
 ]

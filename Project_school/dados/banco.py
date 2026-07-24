@@ -1,5 +1,38 @@
 import sqlite3
 import os
+import re
+
+NUMEROS_EXTENSO = {
+    "primeiro": "1",
+    "segundo": "2",
+    "terceiro": "3",
+    "quarto": "4",
+    "quinto": "5",
+    "sexto": "6",
+    "setimo": "7",
+    "sétimo": "7",
+    "oitavo": "8",
+    "nono": "9",
+    "decimo": "10",
+    "décimo": "10",
+}
+
+def normalizar_turma(texto):
+    """
+    Deixa o texto de uma turma em um formato padrão independente de como foi falado ou digitado. Como por exemplo:
+    9°A ---- 9a
+    nono a ---- 9a
+    oitavob ---- 8b
+    8 B ---- 8b
+    """
+
+    texto= texto.lower().strip()
+    texto = texto.replace("°","").replace("º","").replace(".","").replace("-","")
+
+    for extenso, digito in NUMEROS_EXTENSO.items():
+        texto = re.sub(rf"\b{extenso}\b", digito, texto)
+    texto = texto.replace(" ","")
+    return texto
 
 class Banco:
     def __init__(self):
@@ -41,8 +74,17 @@ class Banco:
         """
         Lista todos os alunos de uma turma
         """
-        self.cursor.execute(""" SELECT * FROM alunos WHERE turma = ? ORDER BY nome""", (turma,))
-        return self.cursor.fetchall() 
+        turma_normalizada = turma_normalizada(turma) ## erro está aqui, o valor nao está sendo associado, com isso o terminal não consegue utilizar a variável
+        self.cursor.execute("SELECT * FROM alunos")
+        todos_alunos = self.cursor.fetchall()
+
+        resultado = [
+            aluno for aluno in todos_alunos
+            if normalizar_turma(aluno[2])== turma_normalizada
+        ]
+        
+        resultado.sort(key=lambda aluno: aluno[1])
+        return resultado
     
     def registrar_chamada(self, aluno_id, presente):
         """
