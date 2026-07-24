@@ -270,10 +270,27 @@ class Cerebro:
            self.falar(f"Nenhum aluno encontrado na turma {turma}.")
            return
       self.falar(f"iniciando chamada da turma {turma}!")
+      resultados =[]
       for aluno in alunos:
            presente = self._perguntar_presenca(aluno)
            self.banco.registrar_chamada(aluno[0], presente)
+           resultados.append((aluno[1],presente))
       self.falar("Chamada finalizada! O que mais posso fazer por você?")
+      presentes = [nome for nome, p in resultados if p == 1]
+      faltantes = [nome for nome, p in resultados if p == 0]
+
+      print("\n" + "*"*40)
+      print(f" RESUMO DA CHAMADA - TURMA {turma.upper()}")
+      print(f"="*40)
+      print(f" PRESENTES: ({len(presentes)})")
+      for nomes in presentes:
+           print(f"       - {aluno}")
+      print(f" X FALTANTES ({len(faltantes)})")
+      for nome in faltantes:
+           print(f"       - {aluno}")
+      print ("="*40 + "\n")
+
+
 
     def _perguntar_presenca(self,aluno):
          """
@@ -285,7 +302,7 @@ class Cerebro:
          palavras_não = ("não", "nao", "falta", "faltou", "ausente")
          
          for tentativa in range(2):
-              resposta= self.ouvir_resposta()
+              resposta= self.ouvir_resposta_curta()
               if resposta is None:
                    if tentativa == 0:
                         self.falar(f"Não ouvi. {nome_aluno} está presente?")
@@ -329,6 +346,36 @@ class Cerebro:
                    return texto.strip()
          except sr.UnknownValueError:
               self.falar("Não entendi. Pode repetir?")
+              return None
+         except Exception as e:
+              print(f"[ERRO] {e}")
+              return None
+         
+
+    def ouvir_resposta_curta(self):
+         """
+        Basicamente um ouvir_resposta com a duração mais curta, otimo para respostas rapidas como o da chamada por exemplo
+         """
+         print("\n[IA] Ouvindo Resposta...")
+         try:
+              audio_gravado = sd.rec(
+                   int(2 * self.taxa_amostragem),samplerate = self.taxa_amostragem, channels=1,
+              dtype = "int16"
+              )
+              sd.wait()
+              buffer = io.BytesIO()
+              with wave.open(buffer,"wb") as wav_file:
+                   wav_file.setnchannels(1)
+                   wav_file.setsampwidth(2)
+                   wav_file.setframerate(self.taxa_amostragem)
+                   wav_file.writeframes(audio_gravado.tobytes())
+              buffer.seek(0)
+              with sr.AudioFile(buffer) as fonte:
+                   audio = self.reconhecedor.record(fonte)
+              texto = self.reconhecedor.recognize_google(audio, language = "pt-BR")
+              print(f"[IA] Ouviu: '{texto}'")
+              return texto.strip()
+         except sr.UnknownValueError:
               return None
          except Exception as e:
               print(f"[ERRO] {e}")
