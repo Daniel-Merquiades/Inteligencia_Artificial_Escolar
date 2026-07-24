@@ -158,5 +158,9 @@
   {
     "frase": "encontrar aluno",
     "intencao": "consultar_aluno"
+  },
+  {
+    "frase": "consultar aluno",
+    "intencao": "consultar_aluno"
   }
 ]

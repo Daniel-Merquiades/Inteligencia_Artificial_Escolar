@@ -215,32 +215,7 @@ class Cerebro:
 
           #Fazer a chamada
         elif intencao == "fazer_chamada":
-             self.falar("Qual é a turma?")
-             turma = self.ouvir_resposta()
-             if not turma:
-                  self.falar("Não entendi a turma, Pode repetir?")
-                  return
-             turma = turma.upper()
-             alunos = self.banco.listar_turma(turma)
-
-             if not alunos:
-                  self.falar(f"Nenhum aluno encontrado na turma '{turma}'.")
-             else:   
-                self.falar(f"Iniciando chamada da turma {turma}!")
-                for aluno in alunos:
-                     self.falar(f"{aluno[1]}.")
-                     presente = 0
-                     for tentativa in range(2):
-                          resposta = self.ouvir_resposta()
-                          if resposta and ("sim" in resposta.lower() or "presente" in resposta.lower() or "aqui" in resposta.lower()):
-                               presente = 1
-                               break
-                          elif tentativa == 0:
-                               self.falar(f"Não ouvi. {aluno[1]} está presente?")
-                          else :
-                               self.falar("Marcado como falta.")
-                          self.banco.registrar_chamada(aluno[0], presente)
-                     self.falar("Chamada Finalizada! O que mais posso fazer por você?")
+           self._realizar_chamada()
 
           #Saudações
         elif intencao == "saudacao":
@@ -280,6 +255,51 @@ class Cerebro:
              raise KeyboardInterrupt
         else:
              self.falar(f"Recebi o comando mas ainda não sei executar isso. Desculpe...")
+
+    def _realizar_chamada(self):
+      """
+      Conduz o fluxo completo da chamada da turma, perguntando a presença de cada um
+      """
+      self.falar("Qual a turma?")
+      turma = self.ouvir_resposta()
+      if not turma:
+           self.falar("Não entendi a turma. Pode repetir?")
+           return
+      alunos = self.banco.listar_turma(turma)
+      if not alunos:
+           self.falar(f"Nenhum aluno encontrado na turma {turma}.")
+           return
+      self.falar(f"iniciando chamada da turma {turma}!")
+      for aluno in alunos:
+           presente = self._perguntar_presenca(aluno)
+           self.banco.registrar_chamada(aluno[0], presente)
+      self.falar("Chamada finalizada! O que mais posso fazer por você?")
+
+    def _perguntar_presenca(self,aluno):
+         """
+      Fala o nome do aluno e armazena se ele está ou não presente. 
+         """
+         nome_aluno = aluno[1]
+         self.falar(f"{nome_aluno}.")
+         palavras_sim = ("sim", "presente", "presidente", "presunto", "aqui", "oi", "presença", "tá aqui","to aqui", "presença")
+         palavras_não = ("não", "nao", "falta", "faltou", "ausente")
+         
+         for tentativa in range(2):
+              resposta= self.ouvir_resposta()
+              if resposta is None:
+                   if tentativa == 0:
+                        self.falar(f"Não ouvi. {nome_aluno} está presente?")
+                   continue
+              resposta = resposta.lower()
+              if any(palavra in resposta for palavra in palavras_sim):
+                   return 1
+              if any(palavra in resposta for palavra in palavras_não):
+                   return 0
+              if tentativa == 0:
+                   self.falar(f"Não entendi sua resposta.{nome_aluno} está presente?")
+         self.falar("Marcado como falta.")
+         return 0
+
 
     def ouvir_resposta(self):
          """
