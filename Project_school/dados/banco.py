@@ -74,13 +74,13 @@ class Banco:
         """
         Lista todos os alunos de uma turma
         """
-        turma_normalizada = turma_normalizada(turma) ## erro está aqui, o valor nao está sendo associado, com isso o terminal não consegue utilizar a variável
+        turma_normalizada = normalizar_turma(turma) ## erro está aqui, o valor nao está sendo associado, com isso o terminal não consegue utilizar a variável
         self.cursor.execute("SELECT * FROM alunos")
         todos_alunos = self.cursor.fetchall()
 
         resultado = [
             aluno for aluno in todos_alunos
-            if normalizar_turma(aluno[2])== turma_normalizada
+            if normalizar_turma(aluno[2]) == turma_normalizada
         ]
         
         resultado.sort(key=lambda aluno: aluno[1])
