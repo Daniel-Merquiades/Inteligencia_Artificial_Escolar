@@ -380,3 +380,30 @@ class Cerebro:
          except Exception as e:
               print(f"[ERRO] {e}")
               return None
+    def tocar_hino(self):
+         """
+       Toca o hino nacional por completo, porém em caso de necessidade de parada do hino, apenas pressionando a tecla 2 o hino será encerrado instantaneamente.
+         """
+         import threading
+         import keyboard
+         from playsound import playsound
+
+         self.falar("Tocando o Hino Nacional")
+
+         self.hino_parado = False
+
+         def monitorar_tecla():
+              keyboard.wait("2")
+              self.hino_parado = True
+         thread = threading.Thread(target=monitorar_tecla)
+         thread.start()
+         caminho_hino = os.path.join(os.path.dirname(os.path.abspath(__file__))), "..", "hinoNacional.mp3"
+         try:
+              playsound(caminho_hino, block = False)
+              while not self.hino_parado:
+                   import time
+                   time.sleep(0.1)
+                   self.falar("Hino nacional encerrado! O que mais posso fazer por você?")
+         except Exception as e:
+              print(f"[ERRO] {e}")
+              self.falar("Não consegui tocar o hino. Verifique o arquivo hinoNacional.mp3 está na pasta do projeto.")
