@@ -134,7 +134,8 @@ class Cerebro:
                 "11": "fazer_chamada",
                 "12": "consultar_aluno",
                 "13": "saudacao",
-                "14": "encerrar"
+                "14": "Tocar o Hino_Nacional",
+                "15": "encerrar"
              }
              print("\nOpções:")
              for num, nome in opcoes.items():
@@ -216,6 +217,10 @@ class Cerebro:
           #Fazer a chamada
         elif intencao == "fazer_chamada":
            self._realizar_chamada()
+
+          #Tocar o hino Nacional
+        elif intencao == "tocar_hino":
+             self.tocar_hino()
 
           #Saudações
         elif intencao == "saudacao":
@@ -397,7 +402,7 @@ class Cerebro:
               self.hino_parado = True
          thread = threading.Thread(target=monitorar_tecla)
          thread.start()
-         caminho_hino = os.path.join(os.path.dirname(os.path.abspath(__file__))), "..", "hinoNacional.mp3"
+         caminho_hino = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Hino_Nacional", "hinoNacional.mp3")
          try:
               playsound(caminho_hino, block = False)
               while not self.hino_parado:
