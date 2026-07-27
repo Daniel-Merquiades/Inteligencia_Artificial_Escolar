@@ -283,11 +283,11 @@ class Cerebro:
       print(f" RESUMO DA CHAMADA - TURMA {turma.upper()}")
       print(f"="*40)
       print(f" PRESENTES: ({len(presentes)})")
-      for nomes in presentes:
-           print(f"       - {aluno}")
+      for nome in presentes:
+           print(f"       - {nome}")
       print(f" X FALTANTES ({len(faltantes)})")
       for nome in faltantes:
-           print(f"       - {aluno}")
+           print(f"       - {nome}")
       print ("="*40 + "\n")
 
 
