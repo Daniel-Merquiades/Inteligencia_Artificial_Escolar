@@ -389,26 +389,24 @@ class Cerebro:
          """
        Toca o hino nacional por completo, porém em caso de necessidade de parada do hino, apenas pressionando a tecla 2 o hino será encerrado instantaneamente.
          """
-         import threading
+         import time
          import keyboard
-         from playsound import playsound
+         import miniaudio
 
+
+         caminho_hino= os.path.join( os.path.dirname(os.path.abspath(__file__)),"Hino_Nacional","hinoNacional.mp3")
+         if not os.path.exists(caminho_hino):
+              self.falar("Não encontrei o arquivo do hino.")
+              return
          self.falar("Tocando o Hino Nacional")
 
-         self.hino_parado = False
+         stream = miniaudio.stream_file(caminho_hino)
+         device = miniaudio.PlaybackDevice()
+         device.start(stream)
 
-         def monitorar_tecla():
-              keyboard.wait("2")
-              self.hino_parado = True
-         thread = threading.Thread(target=monitorar_tecla)
-         thread.start()
-         caminho_hino = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Hino_Nacional", "hinoNacional.mp3")
-         try:
-              playsound(caminho_hino, block = False)
-              while not self.hino_parado:
-                   import time
-                   time.sleep(0.1)
-                   self.falar("Hino nacional encerrado! O que mais posso fazer por você?")
-         except Exception as e:
-              print(f"[ERRO] {e}")
-              self.falar("Não consegui tocar o hino. Verifique o arquivo hinoNacional.mp3 está na pasta do projeto.")
+         while device.running:
+              if keyboard.is_pressed('2'):
+                   device.stop()
+                   break
+              time.sleep(0.1)
+         self.falar("Hino encerrado! O que mais posso fazer por você?")
