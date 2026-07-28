@@ -1550,6 +1550,21 @@ Dados = [
     ("abra o hino do brasil", "tocar_hino"),
     ("quero escutar o hino brasileiro", "tocar_hino"),
     ("inicie a música do hino nacional", "tocar_hino"),
+
+    # Aulas do dia
+    
+    ("aulas de hoje", "aulas_do_dia"),
+    ("quais são as aulas de hoje", "aulas_do_dia"),
+    ("o que tem hoje", "aulas_do_dia"),
+    ("matérias de hoje", "aulas_do_dia"),
+    ("horário de hoje", "aulas_do_dia"),
+    ("que aulas tem hoje", "aulas_do_dia"),
+    ("ver aulas do dia", "aulas_do_dia"),
+    ("aulas do dia", "aulas_do_dia"),
+    ("horário das aulas", "aulas_do_dia"),
+    ("qual o horário hoje", "aulas_do_dia"),
+
+
 ]
 
 frases = [item[0] for item in Dados]

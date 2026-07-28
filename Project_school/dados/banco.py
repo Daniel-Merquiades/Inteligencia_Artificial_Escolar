@@ -12,6 +12,7 @@ NUMEROS_EXTENSO = {
     "setimo": "7",
     "sétimo": "7",
     "oitavo": "8",
+    "OITAVO" : "8",
     "nono": "9",
     "nuno": "9",
     "decimo": "10",

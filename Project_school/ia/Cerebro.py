@@ -11,6 +11,7 @@ from playsound import playsound
 from ia.aprendizado import Aprendizado
 from dados.banco import Banco
 from dispositivos.controles import Controles
+from dados.horario import get_aulas_do_dia, get_dia_atual
 
 class Cerebro:
     """""
@@ -135,6 +136,7 @@ class Cerebro:
                 "12": "consultar_aluno",
                 "13": "saudacao",
                 "14": "Tocar o Hino_Nacional",
+                "15": "aulas_do_dia",
                 "15": "encerrar"
              }
              print("\nOpções:")
@@ -225,6 +227,27 @@ class Cerebro:
           #Saudações
         elif intencao == "saudacao":
              self.falar("Olá! Como posso ajudar?")
+
+          #Aula do dia
+        elif intencao == "aulas_do_dia":
+             self.falar("Qual é a turma?")
+             turma = self.ouvir_resposta()
+             if not turma:
+                  self.falar("Não entendi a turma. Pode repetir?")
+                  return
+             turma = turma.upper()
+             dia = get_dia_atual()
+             if dia in["SABADO", "DOMINGO"]:
+                  self.falar("Hoje é fim de semana, dia para descansar!")
+                  return
+             aulas, erro = get_aulas_do_dia(turma, dia)
+             if erro:
+                  self.falar(erro)
+                  return
+             self.falar(f"Aulas da turma{turma}hoje, {dia.capitalize()}:")
+             for aula in aulas:
+               self.falar(f"Aula {aula["aula"]}: {aula['materia']} das {aula["inicio"]} às {aula["fim"]}.")
+               self.falar("Esse é o horário completo de hoje!")
 
           #Consultar o aluno
         elif intencao =="consultar_aluno":
