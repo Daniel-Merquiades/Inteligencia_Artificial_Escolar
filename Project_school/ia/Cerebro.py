@@ -248,7 +248,7 @@ class Cerebro:
              if erro:
                   self.falar(erro)
                   return
-             self.falar(f"Aulas da turma{turma}, {dia.capitalize()}:")
+             self.falar(f"Aulas da turma {turma}, {dia.capitalize()}:")
              for aula in aulas:
                self.falar(f"Aula {aula['aula']}: {aula['materia']} das {aula['inicio']} às {aula['fim']}.")
              self.falar("Esse é o horário completo de hoje!")
