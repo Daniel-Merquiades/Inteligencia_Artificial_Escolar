@@ -4,19 +4,13 @@ import re
 
 NUMEROS_EXTENSO = {
     "primeiro": "1",
+    "segunda": "2",  
     "segundo": "2",
+    "dois": "2",
     "terceiro": "3",
-    "quarto": "4",
-    "quinto": "5",
-    "sexto": "6",
-    "setimo": "7",
-    "sétimo": "7",
-    "oitavo": "8",
-    "OITAVO" : "8",
-    "nono": "9",
-    "nuno": "9",
-    "decimo": "10",
-    "décimo": "10",
+    "terceira": "3",
+    "três": "3",
+    "tres": "3",
 }
 
 def normalizar_turma(texto):
@@ -29,10 +23,10 @@ def normalizar_turma(texto):
     """
 
     texto= texto.lower().strip()
-    texto = texto.replace("°","").replace("º","").replace(".","").replace("-","")
+    texto = texto.replace("°","").replace("º","").replace(".","").replace("-","").replace("ano","").replace("ANO","").strip()
 
     for extenso, digito in NUMEROS_EXTENSO.items():
-        texto = re.sub(rf"\b{extenso}\b", digito, texto)
+        texto = re.sub(rf"\b{extenso}\b", NUMEROS_EXTENSO[extenso], texto)
     texto = texto.replace(" ","")
     return texto
 

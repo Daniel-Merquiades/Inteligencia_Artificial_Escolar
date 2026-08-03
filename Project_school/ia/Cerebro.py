@@ -11,7 +11,7 @@ from playsound import playsound
 from ia.aprendizado import Aprendizado
 from dados.banco import Banco
 from dispositivos.controles import Controles
-from dados.horario import get_aulas_do_dia, get_dia_atual
+from dados.horario import get_aulas_do_dia, get_dia_atual , get_dia_relativo
 
 class Cerebro:
     """""
@@ -137,7 +137,7 @@ class Cerebro:
                 "13": "saudacao",
                 "14": "Tocar o Hino_Nacional",
                 "15": "aulas_do_dia",
-                "15": "encerrar"
+                "16": "encerrar"
              }
              print("\nOpções:")
              for num, nome in opcoes.items():
@@ -235,8 +235,12 @@ class Cerebro:
              if not turma:
                   self.falar("Não entendi a turma. Pode repetir?")
                   return
-             turma = turma.upper()
-             dia = get_dia_atual()
+             self.falar("Qual dia deseja saber ?")
+             dia_falado = self.ouvir_resposta() or "hoje"
+             if not dia_falado:
+                  self.falar("Não entendi o dia. Usando hoje como padrão.")
+                  dia_falado = "hoje"
+             dia = get_dia_relativo(dia_falado)
              if dia in["SABADO", "DOMINGO"]:
                   self.falar("Hoje é fim de semana, dia para descansar!")
                   return
@@ -244,10 +248,10 @@ class Cerebro:
              if erro:
                   self.falar(erro)
                   return
-             self.falar(f"Aulas da turma{turma}hoje, {dia.capitalize()}:")
+             self.falar(f"Aulas da turma{turma}, {dia.capitalize()}:")
              for aula in aulas:
-               self.falar(f"Aula {aula["aula"]}: {aula['materia']} das {aula["inicio"]} às {aula["fim"]}.")
-               self.falar("Esse é o horário completo de hoje!")
+               self.falar(f"Aula {aula['aula']}: {aula['materia']} das {aula['inicio']} às {aula['fim']}.")
+             self.falar("Esse é o horário completo de hoje!")
 
           #Consultar o aluno
         elif intencao =="consultar_aluno":
