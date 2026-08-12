@@ -6,13 +6,10 @@
 #define SALA1       2   // LED da Sala 1
 #define SALA2       3   // LED da Sala 2
 #define COORDENACAO 4   // LED da Coordenação
-#define QUADRA1     5   // LED da Quadra 1
-#define QUADRA2     6   // LED da Quadra 2
-#define QUADRA3     7   // LED da Quadra 3
-#define PORTAO1     8   // LED Portão 1
-#define PORTAO2     9   // LED Portão 2
-#define PORTA_COORD 10  // LED Porta Coordenação
-#define PATIO       11  // LED Pátio
+#define QUADRA1     5   // LED da Quadra
+#define PATIO       6   // LED Pátio
+#define PORTAO1     7   // LED Portão 
+#define PORTA_COORD 8   // LED Porta Coordenação
 
 void setup() {
   Serial.begin(9600);
@@ -22,24 +19,18 @@ void setup() {
   pinMode(SALA2,       OUTPUT);
   pinMode(COORDENACAO, OUTPUT);
   pinMode(QUADRA1,     OUTPUT);
-  pinMode(QUADRA2,     OUTPUT);
-  pinMode(QUADRA3,     OUTPUT);
-  pinMode(PORTAO1,     OUTPUT);
-  pinMode(PORTAO2,     OUTPUT);
-  pinMode(PORTA_COORD, OUTPUT);
   pinMode(PATIO,       OUTPUT);
+  pinMode(PORTAO1,     OUTPUT);
+  pinMode(PORTA_COORD, OUTPUT);
 
   // Garante que tudo começa apagado
   digitalWrite(SALA1,       LOW);
   digitalWrite(SALA2,       LOW);
   digitalWrite(COORDENACAO, LOW);
   digitalWrite(QUADRA1,     LOW);
-  digitalWrite(QUADRA2,     LOW);
-  digitalWrite(QUADRA3,     LOW);
-  digitalWrite(PORTAO1,     LOW);
-  digitalWrite(PORTAO2,     LOW);
-  digitalWrite(PORTA_COORD, LOW);
   digitalWrite(PATIO,       LOW);
+  digitalWrite(PORTAO1,     LOW);
+  digitalWrite(PORTA_COORD, LOW);
 
   Serial.println("Arduino pronto!");
 }
@@ -82,17 +73,13 @@ void loop() {
       Serial.println("Coordenação apagada!");
     }
 
-    // ── Quadra (3 LEDs juntos) ───────────────────────
+    // ── Quadra (1 LED) ───────────────────────────────
     else if (comando == "LIGA_QUADRA") {
       digitalWrite(QUADRA1, HIGH);
-      digitalWrite(QUADRA2, HIGH);
-      digitalWrite(QUADRA3, HIGH);
       Serial.println("Quadra ligada!");
     }
     else if (comando == "APAGA_QUADRA") {
       digitalWrite(QUADRA1, LOW);
-      digitalWrite(QUADRA2, LOW);
-      digitalWrite(QUADRA3, LOW);
       Serial.println("Quadra apagada!");
     }
 
@@ -106,15 +93,13 @@ void loop() {
       Serial.println("Pátio apagado!");
     }
 
-    // ── Portão (2 LEDs juntos) ───────────────────────
+    // ── Portão (1 LED) ───────────────────────────────
     else if (comando == "ABRIR_PORTAO") {
       digitalWrite(PORTAO1, HIGH);
-      digitalWrite(PORTAO2, HIGH);
       Serial.println("Portão aberto!");
     }
     else if (comando == "FECHAR_PORTAO") {
       digitalWrite(PORTAO1, LOW);
-      digitalWrite(PORTAO2, LOW);
       Serial.println("Portão fechado!");
     }
 
@@ -134,12 +119,9 @@ void loop() {
       digitalWrite(SALA2,       HIGH);
       digitalWrite(COORDENACAO, HIGH);
       digitalWrite(QUADRA1,     HIGH);
-      digitalWrite(QUADRA2,     HIGH);
-      digitalWrite(QUADRA3,     HIGH);
-      digitalWrite(PORTAO1,     HIGH);
-      digitalWrite(PORTAO2,     HIGH);
-      digitalWrite(PORTA_COORD, HIGH);
       digitalWrite(PATIO,       HIGH);
+      digitalWrite(PORTAO1,     HIGH);
+      digitalWrite(PORTA_COORD, HIGH);
       Serial.println("Tudo ligado!");
     }
     else if (comando == "APAGA_TUDO") {
@@ -147,12 +129,9 @@ void loop() {
       digitalWrite(SALA2,       LOW);
       digitalWrite(COORDENACAO, LOW);
       digitalWrite(QUADRA1,     LOW);
-      digitalWrite(QUADRA2,     LOW);
-      digitalWrite(QUADRA3,     LOW);
-      digitalWrite(PORTAO1,     LOW);
-      digitalWrite(PORTAO2,     LOW);
-      digitalWrite(PORTA_COORD, LOW);
       digitalWrite(PATIO,       LOW);
+      digitalWrite(PORTAO1,     LOW);
+      digitalWrite(PORTA_COORD, LOW);
       Serial.println("Tudo apagado!");
     }
 

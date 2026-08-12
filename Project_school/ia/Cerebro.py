@@ -12,6 +12,7 @@ from ia.aprendizado import Aprendizado
 from dados.banco import Banco
 from dispositivos.controles import Controles
 from dados.horario import get_aulas_do_dia, get_dia_atual , get_dia_relativo
+from dados.cardapio import get_cardapio_do_dia, HORARIOS_REFEICAO
 
 class Cerebro:
     """""
@@ -137,6 +138,7 @@ class Cerebro:
                 "13": "saudacao",
                 "14": "Tocar o Hino_Nacional",
                 "15": "aulas_do_dia",
+                "16": "Cardápio",
                 "16": "encerrar"
              }
              print("\nOpções:")
@@ -223,6 +225,24 @@ class Cerebro:
           #Tocar o hino Nacional
         elif intencao == "tocar_hino":
              self.tocar_hino()
+
+          #Cardápio do dia
+        elif intencao == "cardapio":
+             self.falar("De qual dia você quer saber o cardápio?")
+             dia_falado = self.ouvir_resposta()
+             if not dia_falado:
+                  dia_falado = "hoje"
+             dia = get_dia_relativo(dia_falado)
+             if dia in ["SABADO", "DOMINGO"]:
+                 self.falar("Fim de semana não há refeições na escola!")
+                 return
+             cardapio, erro = get_cardapio_do_dia(dia)
+             if erro:
+                 self.falar(erro)
+                 return
+             self.falar(f"Cardápio de {dia.capitalize()}:")
+             self.falar(f"Café da manhâ, das {HORARIOS_REFEICAO['cafe']}: {cardapio['cafe']}.")
+             self.falar(f"Almoço, das {HORARIOS_REFEICAO['almoco']}:{cardapio['almoco']}.")
 
           #Saudações
         elif intencao == "saudacao":
