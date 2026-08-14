@@ -52,3 +52,48 @@ def buscar_aluno():
     }for a in resultados])
 
 #--PRESENÇA--
+@app.route('/presenca', methods=['GET'])
+def ver_presenca():
+    """
+   Retorna a presença do dia de uma turma
+    """
+    turma = request.args.get('turma', '3')
+    chamada = banco.ver_chamada(turma)
+    return jsonify([{
+        "nome": c[0],
+        "presente": c[1]
+    }for c in chamada])
+
+#--HORÁRIO--
+@app.route('/horario', methods=['GET'])
+def ver_horario():
+    """
+  Retorna o horário das aulas de uma turma hoje.
+    """
+    turma = request.args.get('turma', '3')
+    dia = get_dia_atual()
+    aulas, erro = get_aulas_do_dia(turma, dia)
+    if erro:
+        return jsonify({"erro": erro})
+    return jsonify(aulas)
+
+#--CARDÁPIO--
+@app.route('/cardapio', methods=['GET'])
+def ver_cardapio():
+    """
+    Retorna o cardápio de hoje.
+    """
+    dia = get_dia_atual
+    cardapio, erro = get_cardapio_do_dia(dia)
+    if erro:
+        return jsonify({"erro": erro})
+    return jsonify({
+        "dia": dia,
+        "cafe": cardapio["cafe"],
+        "almoco": cardapio["almoco"],
+        "horario_cafe": HORARIOS_REFEICAO("cafe"),
+        "horario_almoco": HORARIOS_REFEICAO("almoco")
+    })
+if __name__ == '__main__':
+    print ("Servidor rodando em http://localhost:5000")
+    app.run(debug=True, port=5000)
