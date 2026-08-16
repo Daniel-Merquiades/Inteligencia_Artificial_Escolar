@@ -22,14 +22,20 @@ processo_ia = None
 @app.route('/ia/ligar', methods=['POST'])
 def ligar_ia():
     global processo_ia
-    if processo_ia and processo_ia.pool() is None:
-        return jsonify ({"status": "ja_ligada", "mensagem": "IA já está rodando!"})
-    caminho_main= os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "main.py")
-    processo_ia = subprocess.Popen(
-        ['python', caminho_main],
-        creationflags=subprocess.CREATE_NEW_CONSOLE
+    if processo_ia and processo_ia.poll() is None:
+        return jsonify({"status": "ja_ligada"})
+    
+    caminho_main = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "main.py"
     )
-    return jsonify({"status": "ligada", "mensagem": "IA iniciada com sucesso!"})
+    
+    # Sem janela — roda em segundo plano
+    processo_ia = subprocess.Popen(
+        ['python', caminho_main, '--site'],  # passa flag --site
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+    return jsonify({"status": "ligada"})
 @app.route('/ia/desligar', methods = ['POST'])
 def desligar_ia():
     global processo_ia
