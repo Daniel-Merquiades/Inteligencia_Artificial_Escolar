@@ -14,7 +14,6 @@
     min-height: 100vh;
   }
 
-  /* ── SIDEBAR ── */
   .sidebar {
     width: 220px;
     background: #fff;
@@ -76,7 +75,6 @@
 
   .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-  /* ── TOPBAR ── */
   .topbar {
     position: fixed;
     top: 0; left: 220px; right: 0;
@@ -92,7 +90,6 @@
   }
 
   .topbar-title { font-size: 15px; font-weight: 600; color: #1a2a3a; }
-
   .topbar-right { display: flex; align-items: center; gap: 16px; }
 
   .avatar {
@@ -103,13 +100,11 @@
     color: #fff; font-weight: 700; font-size: 14px;
   }
 
-  /* ── MAIN ── */
   .main { margin-left: 220px; margin-top: 56px; padding: 28px; flex: 1; }
 
   .page { display: none; }
   .page.active { display: block; }
 
-  /* ── CARDS ── */
   .card {
     background: #fff;
     border-radius: 12px;
@@ -130,7 +125,6 @@
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
 
-  /* ── HOME ── */
   .stat-card {
     background: #fff;
     border-radius: 12px;
@@ -167,7 +161,6 @@
   .welcome-text h2 { font-size: 20px; font-weight: 700; }
   .welcome-text p { font-size: 13px; opacity: 0.85; margin-top: 3px; }
 
-  /* ── PRESENÇA ── */
   .aluno-row {
     display: flex; align-items: center;
     padding: 12px 0;
@@ -192,7 +185,6 @@
   .badge-presente { background: #e6f9f0; color: #1db87a; }
   .badge-falta { background: #ffeaea; color: #e63946; }
 
-  /* ── HORÁRIO ── */
   .horario-grid { display: grid; grid-template-columns: 60px 1fr; gap: 0; }
 
   .horario-hora {
@@ -217,7 +209,6 @@
   .horario-aula.almoco { background: #fff8e6; border-left-color: #f4a261; color: #c07a2a; }
   .horario-time { font-size: 12px; font-weight: 400; color: #8a9ab0; }
 
-  /* ── CARDÁPIO ── */
   .cardapio-dia { border-radius: 10px; overflow: hidden; border: 1px solid #e0e7ef; margin-bottom: 16px; }
 
   .cardapio-dia-header {
@@ -244,7 +235,6 @@
 
   .cardapio-info p { font-size: 13px; color: #1a2a3a; line-height: 1.5; }
 
-  /* ── HINO ── */
   .hino-container { text-align: center; padding: 40px 20px; }
 
   .bandeira {
@@ -272,7 +262,6 @@
   .btn-hino.parar { background: #e63946; }
   .btn-hino.parar:hover { background: #c0303a; }
 
-  /* ── ALUNO RELATÓRIO ── */
   .aluno-perfil { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
 
   .aluno-foto {
@@ -299,7 +288,6 @@
 
   .info-item span { font-size: 15px; font-weight: 700; color: #1a2a3a; }
 
-  /* ── BUSCA ── */
   .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
 
   .search-box input {
@@ -317,7 +305,6 @@
     border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;
   }
 
-  /* ── TABS ── */
   .tabs {
     display: flex; gap: 4px; margin-bottom: 20px;
     background: #f0f4f8; padding: 4px;
@@ -331,6 +318,24 @@
   }
 
   .tab.active { background: #fff; color: #0057a8; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Botão IA */
+  #btn-ia {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 18px;
+    border-radius: 20px; border: none;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    background: #e63946; color: #fff;
+    transition: all 0.2s;
+  }
+
+  #btn-ia:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  @keyframes piscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
 
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: #f0f4f8; }
@@ -385,6 +390,13 @@
   <span class="topbar-title" id="topbar-title">Home</span>
   <div class="topbar-right">
     <div style="font-size:13px;color:#5a6a7a;">Escola Estadual — 2026</div>
+
+    <!-- Botão IA -->
+    <button id="btn-ia" onclick="toggleIA()">
+      <span id="ia-dot" style="width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block;"></span>
+      <span id="ia-label">IA Desligada</span>
+    </button>
+
     <div class="avatar">GE</div>
   </div>
 </div>
@@ -654,7 +666,10 @@
       if (!cardapio.erro) {
         document.getElementById('home-cafe').textContent = cardapio.cafe;
         document.getElementById('home-almoco').textContent = cardapio.almoco;
-        const dias = {SEGUNDA:'Segunda-feira',TERÇA:'Terça-feira',QUARTA:'Quarta-feira',QUINTA:'Quinta-feira',SEXTA:'Sexta-feira'};
+        const dias = {
+          SEGUNDA:'Segunda-feira', TERCA:'Terça-feira',
+          QUARTA:'Quarta-feira', QUINTA:'Quinta-feira', SEXTA:'Sexta-feira'
+        };
         document.getElementById('home-dia').textContent = dias[cardapio.dia] || cardapio.dia;
       } else {
         document.getElementById('home-cafe').textContent = 'Fim de semana';
@@ -673,7 +688,6 @@
         document.getElementById('home-aulas').innerHTML = '<div style="color:#8a9ab0;font-size:13px;">Sem aulas hoje.</div>';
       }
     } catch(e) {
-      console.error('Erro ao carregar home:', e);
       document.getElementById('home-cafe').textContent = 'Servidor offline';
       document.getElementById('home-almoco').textContent = 'Inicie o servidor.py';
     }
@@ -825,8 +839,55 @@
     }
   }
 
+  // ── BOTÃO IA ───────────────────────────────────────
+  async function toggleIA() {
+    const btn = document.getElementById('btn-ia');
+    const label = document.getElementById('ia-label');
+    const dot = document.getElementById('ia-dot');
+
+    try {
+      const status = await fetch(`${API}/ia/status`).then(r => r.json());
+
+      if (status.ligada) {
+        await fetch(`${API}/ia/desligar`, { method: 'POST' });
+        btn.style.background = '#e63946';
+        label.textContent = 'IA Desligada';
+        dot.style.animation = 'none';
+      } else {
+        await fetch(`${API}/ia/ligar`, { method: 'POST' });
+        btn.style.background = '#1db87a';
+        label.textContent = 'IA Ligada';
+        dot.style.animation = 'piscar 1s infinite';
+      }
+    } catch(e) {
+      alert('Servidor offline! Inicie o servidor.py primeiro.');
+    }
+  }
+
+  async function verificarStatusIA() {
+    try {
+      const status = await fetch(`${API}/ia/status`).then(r => r.json());
+      const btn = document.getElementById('btn-ia');
+      const label = document.getElementById('ia-label');
+      const dot = document.getElementById('ia-dot');
+      if (status.ligada) {
+        btn.style.background = '#1db87a';
+        label.textContent = 'IA Ligada';
+        dot.style.animation = 'piscar 1s infinite';
+      } else {
+        btn.style.background = '#e63946';
+        label.textContent = 'IA Desligada';
+        dot.style.animation = 'none';
+      }
+    } catch(e) {}
+  }
+
   // ── INICIALIZAÇÃO ──────────────────────────────────
-  window.onload = () => { carregarHome(); };
+  window.onload = () => {
+    carregarHome();
+    verificarStatusIA();
+    setInterval(verificarStatusIA, 5000);
+  };
 </script>
 
 </body>
