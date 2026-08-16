@@ -125,7 +125,7 @@ class Cerebro:
              if self.modo_site:
                 self.falar("Não tenho certeza do que você quis dizer. Pode repetir?")
                 return
-        else:
+             else:
                 opcoes= {
                 "1": "ligar_luz",
                 "2": "ligar_sala1",
