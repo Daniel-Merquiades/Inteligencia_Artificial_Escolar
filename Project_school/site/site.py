@@ -7,6 +7,16 @@ import os
 import subprocess
 import signal
 
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from dados.horario import get_aulas_do_dia, get_dia_atual
+from dados.cardapio import get_cardapio_do_dia, HORARIOS_REFEICAO
+from dados.banco import normalizar_turma
+
+app = Flask(__name__)
+CORS(app)
+
 processo_ia = None
 
 @app.route('/ia/ligar', methods=['POST'])
@@ -33,15 +43,6 @@ def status_ia():
     global processo_ia
     ligada = processo_ia is not None and processo_ia.poll() is None
     return jsonify({"ligada": ligada})
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from dados.horario import get_aulas_do_dia, get_dia_atual
-from dados.cardapio import get_cardapio_do_dia, HORARIOS_REFEICAO
-from dados.banco import normalizar_turma
-
-app = Flask(__name__)
-CORS(app)
 
 # Caminho do banco
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dados", "escola.db")
