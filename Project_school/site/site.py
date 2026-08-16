@@ -4,6 +4,35 @@ from flask_cors import CORS
 import sqlite3
 import sys
 import os
+import subprocess
+import signal
+
+processo_ia = None
+
+@app.route('/ia/ligar', methods=['POST'])
+def ligar_ia():
+    global processo_ia
+    if processo_ia and processo_ia.pool() is None:
+        return jsonify ({"status": "ja_ligada", "mensagem": "IA já está rodando!"})
+    caminho_main= os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "main.py")
+    processo_ia = subprocess.Popen(
+        ['python', caminho_main],
+        creationflags=subprocess.CREATE_NEW_CONSOLE
+    )
+    return jsonify({"status": "ligada", "mensagem": "IA iniciada com sucesso!"})
+@app.route('/ia/desligar', methods = ['POST'])
+def desligar_ia():
+    global processo_ia
+    if processo_ia and processo_ia.poll() is None:
+        processo_ia.terminate()
+        processo_ia = None
+        return jsonify({"status": "desligada", "mensagem": "IA encerrada!"})
+    return jsonify({"status": "ja_desligada", "mensagem": "IA já estava desligada!"})
+@app.route('/ia/status', methods=['GET'])
+def status_ia():
+    global processo_ia
+    ligada = processo_ia is not None and processo_ia.poll() is None
+    return jsonify({"ligada": ligada})
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
