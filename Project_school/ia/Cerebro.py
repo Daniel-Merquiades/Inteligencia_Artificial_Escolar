@@ -26,6 +26,7 @@ class Cerebro:
         é o momento que a ia acorda
         """""
         print("[IA] Núcleo inicializado.")
+        self.modo_site = self.modo_site
         self.controles = Controles()
         self.banco = Banco()
         self.nome= "alexa escolar"
@@ -121,8 +122,11 @@ class Cerebro:
         """""
         intencao, confianca = self.identificar_intencao(comando)
         if confianca < 30:
-             self.falar("Não tenho certeza do que você quis dizer. Pode repetir?")
-             opcoes= {
+             if self.modo_site:
+                self.falar("Não tenho certeza do que você quis dizer. Pode repetir?")
+                return
+        else:
+                opcoes= {
                 "1": "ligar_luz",
                 "2": "ligar_sala1",
                 "3": "ligar_sala2",
@@ -140,20 +144,20 @@ class Cerebro:
                 "15": "aulas_do_dia",
                 "16": "Cardápio",
                 "16": "encerrar"
-             }
-             print("\nOpções:")
-             for num, nome in opcoes.items():
-                  print(f" '{num}' -> '{nome}'")
-             print("0 -> Ignorar")
-             escolha = input("digite o número ").strip()
-             if escolha in opcoes:
-                 intencao_correta = opcoes[escolha]
-                 self.aprendizado.salvar_exemplo(comando,intencao_correta)
-                 self.modelo = self.aprendizado.retreinar()
-                 self.falar("Entendido! Já aprendi isso")
-                 intencao = intencao_correta
-             else:
-                 return
+                }
+                print("\nOpções:")
+                for num, nome in opcoes.items():
+                     print(f" '{num}' -> '{nome}'")
+                print("0 -> Ignorar")
+                escolha = input("digite o número ").strip()
+                if escolha in opcoes:
+                      intencao_correta = opcoes[escolha]
+                      self.aprendizado.salvar_exemplo(comando,intencao_correta)
+                      self.modelo = self.aprendizado.retreinar()
+                      self.falar("Entendido! Já aprendi isso")
+                      intencao = intencao_correta
+                else:
+                      return
              
         #Ligar luzes
         if intencao == "ligar_luz":
