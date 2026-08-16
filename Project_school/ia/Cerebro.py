@@ -20,13 +20,13 @@ class Cerebro:
     Por Enquanto faz o básico e tals
     mas nas proximas vai ficar do balacobaco
     """""
-    def __init__(self):
+    def __init__(self, modo_site=False):
         """""
         __init__ roda automaticamente quando se faz o Cerebro()
         é o momento que a ia acorda
         """""
         print("[IA] Núcleo inicializado.")
-        self.modo_site = self.modo_site
+        self.modo_site= modo_site
         self.controles = Controles()
         self.banco = Banco()
         self.nome= "alexa escolar"
